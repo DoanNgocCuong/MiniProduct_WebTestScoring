@@ -28,12 +28,12 @@ This interactive quiz application is designed to provide a user-friendly platfor
 
 1. Clone the repository:
    ```
-   git clone https://github.com/yourusername/quiz-application.git
+   https://github.com/DoanNgocCuong/MiniProduct_WebTestScoring/
    ```
 
 2. Navigate to the project directory:
    ```
-   cd quiz-application
+   cd MiniProduct_WebTestScoring
    ```
 
 3. Install the required dependencies:
