@@ -1,0 +1,7 @@
+aiohttp
+pandas
+gradio
+openai
+openpyxl
+circuitbreaker
+gdown
