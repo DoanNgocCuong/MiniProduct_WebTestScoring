@@ -97,4 +97,4 @@ Contributions to improve the application are welcome. Please follow these steps:
 
 ## Contact
 
-For any queries or support, please contact [Your Name] at [your.email@example.com].
+For any queries or support, please contact DoanNgocCuong at `cuongmkmtpgoldfinch@gmail.com`.
