@@ -1,5 +1,10 @@
 
----------
+- Về cách chấm điểm, define các tiêu chí như nào, Prompt ra sao => Xem github của mình ở Notebook: "Prompting"
+- Define cách lưu trữ các keys JSON, các biến, ... 
+- Define nơi lưu file, Define các bước xử lý, móc nối, ... 
+
+Software Engineering and System Desing
+
 
 **Các tài liệu cần thiết** trong quá trình phát triển phần mềm:
 
@@ -14,4 +19,3 @@
 7. **Tài liệu bảo trì**: Lịch sử thay đổi và kế hoạch bảo trì.
 8. **Tài liệu đào tạo**: Slides, bài giảng, và bài tập thực hành.
 9. **Tài liệu quản lý dự án**: Kế hoạch dự án, báo cáo tiến độ, và báo cáo rủi ro.
-
