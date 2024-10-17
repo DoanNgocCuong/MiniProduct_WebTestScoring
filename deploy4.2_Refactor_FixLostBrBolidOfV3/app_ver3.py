@@ -17,8 +17,11 @@ from circuitbreaker import circuit
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-
 file_lock = threading.Lock()
+
+from dotenv import load_dotenv
+load_dotenv()
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 
 def update_topic_selector():
     questions, checking_answers, explain_answers, topics, questions_mc, questions_essay, topics_mc, topics_essay = load_all_data(file_path, sheet_name_mc, sheet_name_essay)

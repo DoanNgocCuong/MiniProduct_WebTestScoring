@@ -3,8 +3,8 @@
 import gradio as gr
 import os
 import logging
-from frontend.styles import custom_css
-from frontend.callbacks import QuizCallbacks
+from .styles import custom_css
+from .callbacks import QuizCallbacks
 
 logger = logging.getLogger(__name__)
 
@@ -62,24 +62,23 @@ class QuizInterface:
             self.callbacks.start_quiz,
             inputs=[self.user_name_input, self.topic_selector, self.num_questions],
             outputs=[
-                self.question_box, self.user_input, self.submit_button, self.state, self.total_score_display
+                self.question_box, self.user_input, self.submit_button, self.state, self.total_score_display,
+                self.user_name_input, self.topic_selector, self.num_questions, self.start_button
             ]
         )
         self.submit_button.click(
             self.callbacks.submit_answer,
             inputs=[self.user_input, self.state],
             outputs=[
-                self.question_box, self.user_input, self.user_answer_display, self.submit_button,
-                self.next_button, self.response_box, self.total_score_display, self.state,
-                self.results_table, self.download_button
+                self.response_box, self.next_button, self.total_score_display, self.state,
+                self.user_feedback, self.save_feedback_button, self.results_table, self.download_button
             ]
         )
         self.next_button.click(
             self.callbacks.next_question,
             inputs=[self.state],
             outputs=[
-                self.question_box, self.user_input, self.user_answer_display, self.submit_button,
-                self.next_button, self.response_box, self.state
+                self.question_box, self.user_input, self.submit_button, self.response_box, self.next_button, self.state
             ]
         )
         self.save_feedback_button.click(
