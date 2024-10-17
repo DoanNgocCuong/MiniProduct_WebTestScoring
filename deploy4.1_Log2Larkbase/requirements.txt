@@ -1,7 +1,11 @@
-aiohttp
 pandas
 gradio
 openai
 openpyxl
+
+aiohttp
 circuitbreaker
+
 gdown
+
+python-dotenv

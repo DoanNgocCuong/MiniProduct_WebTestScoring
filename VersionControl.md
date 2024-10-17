@@ -80,4 +80,4 @@ Initial release of the quiz application.
 Each version has built upon the previous, with version 2.1 representing a significant leap in terms of user experience and overall application robustness.
 
 
-Version 2.2: Update Prompting cơ chế chấm điểm => Kéo theo cơ chế điểm số 1 câu => Làm xong tính ra điểm trung bình
+Version 3.1: Update Prompting cơ chế chấm điểm => Kéo theo cơ chế điểm số 1 câu => Làm xong tính ra điểm trung bình
