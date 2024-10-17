@@ -27,7 +27,7 @@ Initial release of the quiz application.
 - Better code organization with separate files for app logic and data handling
 - Increased concurrency limit from 20 to 40
 
-## Version 3 (@app.py, @UI_data.py, @BuildCode_deploy3_ChangeUIUX.ipynb)
+## version 2.1 (@app.py, @UI_data.py, @BuildCode_deploy3_ChangeUIUX.ipynb)
 
 ### Major Changes:
 1. Significant UI/UX improvements
@@ -55,26 +55,29 @@ Initial release of the quiz application.
 1. Code Structure:
    - Version 1: Single file
    - Version 2: Separated app logic and data handling
-   - Version 3: Maintained separation with focus on UI/UX improvements
+   - version 2.1: Maintained separation with focus on UI/UX improvements
 
 2. User Experience:
    - Version 1: Basic functionality
    - Version 2: Improved with admin features
-   - Version 3: Significantly enhanced with intuitive quiz flow and feedback collection
+   - version 2.1: Significantly enhanced with intuitive quiz flow and feedback collection
 
 3. Performance:
    - Version 1: Basic concurrency
    - Version 2: Improved concurrency and error handling
-   - Version 3: Further optimized with better asynchronous processing
+   - version 2.1: Further optimized with better asynchronous processing
 
 4. Maintainability:
    - Version 1: Limited
    - Version 2: Improved with separate files
-   - Version 3: Enhanced with clearer code structure and improved error handling
+   - version 2.1: Enhanced with clearer code structure and improved error handling
 
 5. Scalability:
    - Version 1: Limited
    - Version 2: Improved with better data management
-   - Version 3: Further enhanced with optimized processing and UI improvements
+   - version 2.1: Further enhanced with optimized processing and UI improvements
 
-Each version has built upon the previous, with Version 3 representing a significant leap in terms of user experience and overall application robustness.
+Each version has built upon the previous, with version 2.1 representing a significant leap in terms of user experience and overall application robustness.
+
+
+Version 2.2: Update Prompting cơ chế chấm điểm => Kéo theo cơ chế điểm số 1 câu => Làm xong tính ra điểm trung bình
