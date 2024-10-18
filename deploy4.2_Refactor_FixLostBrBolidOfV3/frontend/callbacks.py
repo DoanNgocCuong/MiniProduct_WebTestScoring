@@ -33,7 +33,7 @@ class QuizCallbacks:
                 update(visible=False),  # Hide next_button
                 update(visible=False),  # Hide user_feedback
                 update(visible=False),  # Hide save_feedback_button
-                state
+                self.quiz_manager.get_initial_state(state)  # Return initial state
             )
         except Exception as e:
             logger.error(f"Error starting quiz: {e}")
@@ -70,8 +70,8 @@ class QuizCallbacks:
                 update(value=f"{state['total_score']}/{max_possible_score}", label=total_score_text),  # total_score_display
                 update(visible=True),                           # user_feedback
                 update(visible=True),                           # save_feedback_button
-                update(visible=False),                          # results_table
-                update(visible=False),                          # download_button
+                update(value=df, visible=True),                 # results_table (hiển thị kết quả)
+                update(visible=True),                           # download_button (hiển thị nút download)
                 state
             )
         else:
@@ -116,13 +116,17 @@ class QuizCallbacks:
     def save_feedback(self, feedback, state):
         try:
             state['user_feedback'] = feedback
+            # Cập nhật feedback trong kết quả
+            for result in state['results']:
+                result['user_feedback'] = feedback
+            # Ghi lại kết quả vào file Excel
             self.quiz_manager.finalize_quiz(state)
             df = pd.DataFrame(state['results'])
             return (
                 update(visible=False),           # user_feedback
                 update(visible=False),           # save_feedback_button
-                update(value=df, visible=False),  # Hide results_table initially
-                update(visible=True),            # download_button
+                update(value=df, visible=True),  # results_table (cập nhật với feedback)
+                update(visible=True),            # download_button (đã hiển thị)
                 state
             )
         except Exception as e:

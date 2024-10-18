@@ -152,3 +152,21 @@ class QuizManager:
             return question_data['question']
         else:
             return "Quiz finished!"
+        
+    def finalize_quiz(self, state):
+        quiz_end_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        for result in state['results']:
+            result['time_start'] = state['quiz_start_time']
+            result['time_end'] = quiz_end_time
+            result['total_score'] = state['total_score']
+            result['user_feedback'] = state.get('user_feedback', '')
+        df = pd.DataFrame(state['results'])
+        try:
+            save_results_to_excel(df, state['output_path'])
+            logger.info("Quiz finalized và kết quả đã được lưu.")
+        except Exception as e:
+            logger.error(f"Lỗi khi lưu kết quả quiz: {e}")
+    
+    def get_initial_state(self, state):
+        # Trả về state ban đầu để lưu trữ
+        return state
