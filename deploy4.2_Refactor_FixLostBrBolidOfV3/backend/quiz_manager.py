@@ -6,7 +6,7 @@ import random
 import pandas as pd
 from datetime import datetime
 from .scorer import Scorer
-from .utils import save_results_to_excel, file_lock
+from .utils import save_results_to_excel
 
 logger = logging.getLogger(__name__)
 
@@ -21,7 +21,7 @@ class QuizManager:
         total_available_questions = len(mc_questions) + len(essay_questions)
 
         if total_available_questions == 0:
-            raise ValueError("No questions available for the selected topics.")
+            raise ValueError("Không có câu hỏi nào cho chủ đề đã chọn.")
 
         num_questions = min(num_questions, total_available_questions)
         desired_essay = int(num_questions * 0.7)
@@ -35,11 +35,14 @@ class QuizManager:
         random.shuffle(questions)
 
         quiz_start_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        output_path = f"{self.output_dir}/{user_name.replace(' ', '_')}_{'_'.join(selected_topics).replace(' ', '_')}_{datetime.now().strftime('%Y%m%d')}_results.xlsx"
+        file_safe_user_name = user_name.replace(" ", "")
+        file_safe_topic = "_".join(selected_topics).replace(" ", "_")
+        date_str = datetime.now().strftime("%d%m%Y")
+        output_path = f"{self.output_dir}/{file_safe_user_name}_{file_safe_topic}_{date_str}_results.xlsx"
 
         state = {
             'user_name': user_name,
-            'selected_topics': selected_topics,
+            'selected_topic': selected_topics,
             'num_questions': num_questions,
             'questions': questions,
             'current_question_index': 0,
@@ -48,8 +51,12 @@ class QuizManager:
             'quiz_start_time': quiz_start_time,
             'output_path': output_path,
             'num_mc': actual_mc,
-            'num_essay': actual_essay
+            'num_essay': actual_essay,
+            'user_feedback': ''
         }
+
+        logger.info(f"Khởi tạo quiz cho người dùng: {user_name}")
+        logger.info(f"Chọn {actual_essay} câu tự luận và {actual_mc} câu trắc nghiệm.")
 
         return state
 
@@ -61,34 +68,36 @@ class QuizManager:
         explain_answer = question_data['explain_answer']
         is_essay = question_data['is_essay']
 
-        if is_essay:
-            try:
-                response = await self.scorer.score_essay(question, checking_answer, user_answer)
-                point = sum(criterion['score'] for criterion in response.values())
-                feedback = self.format_essay_feedback(response, explain_answer)
-            except Exception as e:
-                logger.error(f"Error in scoring essay question: {str(e)}")
-                point = 0
-                feedback = f"Error occurred during scoring: {str(e)}. Please try again."
-        else:
-            is_correct = user_answer.strip().upper() == checking_answer.strip().upper()
-            point = 10 if is_correct else 0
-            feedback = self.format_mc_feedback(is_correct, explain_answer)
+        if user_answer:
+            if is_essay:
+                try:
+                    response = await self.scorer.score_essay(question, checking_answer, user_answer)
+                    point = sum(criterion['score'] for criterion in response.values())
+                    feedback = self.format_essay_feedback(response, explain_answer)
+                except Exception as e:
+                    logger.error(f"Lỗi khi chấm điểm câu tự luận: {str(e)}")
+                    point = 0
+                    feedback = f"Có lỗi xảy ra khi chấm điểm: {str(e)}. Vui lòng thử lại."
+            else:
+                is_correct = user_answer.strip().upper() == checking_answer.strip().upper()
+                point = 10 if is_correct else 0
+                feedback = self.format_mc_feedback(is_correct, explain_answer)
 
-        state['total_score'] += point
-        state['results'].append({
-            'user_name': state['user_name'],
-            'stt': index + 1,
-            'question_type': 'essay' if is_essay else 'mc',
-            'question': question,
-            'user_answer': user_answer,
-            'point': point,
-            'assistant_response': feedback.replace('<br>', '\n').replace('<b>', '').replace('</b>', ''),
-            'topics': state['selected_topics'],
-            'time_start': state['quiz_start_time'],
-            'time_end': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            'total_score': state['total_score']
-        })
+            state['total_score'] += point
+            state['results'].append({
+                'user_name': state['user_name'],
+                'stt': index + 1,
+                'question_type': 'essay' if is_essay else 'mc',
+                'question': question,
+                'user_answer': user_answer,
+                'point': point,
+                'assistant_response': feedback.replace('<br>', '\n').replace('<b>', '').replace('</b>', ''),
+                'topics': state["selected_topic"] if isinstance(state["selected_topic"], list) else [state["selected_topic"]]
+            })
+
+            logger.info(f"Câu hỏi {index + 1} đã được trả lời. Điểm: {point}")
+        else:
+            feedback = ""
 
         state['current_question_index'] += 1
 
@@ -123,9 +132,19 @@ class QuizManager:
         return feedback
 
     def finalize_quiz(self, state):
+        quiz_end_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        for result in state['results']:
+            result['time_start'] = state['quiz_start_time']
+            result['time_end'] = quiz_end_time
+            result['total_score'] = state['total_score']
+            result['user_feedback'] = state.get('user_feedback', '')
+
         df = pd.DataFrame(state['results'])
-        save_results_to_excel(df, state['output_path'])
-        logger.info("Quiz finalized and results saved.")
+        try:
+            save_results_to_excel(df, state['output_path'])
+            logger.info("Quiz finalized và kết quả đã được lưu.")
+        except Exception as e:
+            logger.error(f"Lỗi khi lưu kết quả quiz: {e}")
 
     def get_next_question(self, state):
         if state['current_question_index'] < state['num_questions']:

@@ -3,7 +3,6 @@
 import gradio as gr
 import os
 import logging
-from .styles import custom_css
 from .callbacks import QuizCallbacks
 
 logger = logging.getLogger(__name__)
@@ -16,11 +15,18 @@ class QuizInterface:
         self.build_interface()
 
     def build_interface(self):
-        self.demo = gr.Blocks(css=custom_css)
+        self.demo = gr.Blocks(css=self.get_custom_css())
         with self.demo:
             self.state = gr.State({})
             self.setup_components()
             self.setup_event_handlers()
+
+    def get_custom_css(self):
+        # Read the custom CSS from styles.css
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        css_path = os.path.join(current_dir, 'styles.css')
+        with open(css_path, 'r', encoding='utf-8') as f:
+            return f.read()
 
     def setup_components(self):
         self.total_score_display = gr.Textbox(
@@ -47,8 +53,10 @@ class QuizInterface:
             self.submit_button = gr.Button("Submit", visible=False)
             self.response_box = gr.HTML(label="Response", visible=False)
             self.next_button = gr.Button("Next Question", visible=False)
+            
             self.user_feedback = gr.Textbox(label="User Feedback", visible=False)
             self.save_feedback_button = gr.Button("Save Feedback", visible=False)
+            
             self.results_table = gr.DataFrame(
                 label="Your results have been saved successfully",
                 interactive=False,
@@ -62,29 +70,38 @@ class QuizInterface:
             self.callbacks.start_quiz,
             inputs=[self.user_name_input, self.topic_selector, self.num_questions],
             outputs=[
-                self.question_box, self.user_input, self.submit_button, self.state, self.total_score_display,
-                self.user_name_input, self.topic_selector, self.num_questions, self.start_button
+                self.question_box, self.user_input, self.submit_button,
+                self.user_name_input, self.topic_selector, self.num_questions,
+                self.start_button, self.total_score_display,
+                self.response_box, self.next_button, self.user_feedback,
+                self.save_feedback_button, self.state
             ]
         )
         self.submit_button.click(
             self.callbacks.submit_answer,
             inputs=[self.user_input, self.state],
             outputs=[
-                self.response_box, self.next_button, self.total_score_display, self.state,
-                self.user_feedback, self.save_feedback_button, self.results_table, self.download_button
+                self.question_box, self.user_input, self.user_answer_display,
+                self.submit_button, self.next_button, self.response_box,
+                self.total_score_display, self.user_feedback, self.save_feedback_button,
+                self.results_table, self.download_button, self.state
             ]
         )
         self.next_button.click(
             self.callbacks.next_question,
             inputs=[self.state],
             outputs=[
-                self.question_box, self.user_input, self.submit_button, self.response_box, self.next_button, self.state
+                self.question_box, self.user_input, self.user_answer_display,
+                self.submit_button, self.next_button, self.response_box, self.state
             ]
         )
         self.save_feedback_button.click(
             self.callbacks.save_feedback,
             inputs=[self.user_feedback, self.state],
-            outputs=[self.user_feedback, self.save_feedback_button, self.results_table, self.download_button, self.state]
+            outputs=[
+                self.user_feedback, self.save_feedback_button,
+                self.results_table, self.download_button, self.state
+            ]
         )
         self.download_button.click(
             self.callbacks.download_results,
@@ -93,4 +110,4 @@ class QuizInterface:
         )
 
     def launch(self):
-        self.demo.launch(share=True, server_name="0.0.0.0", server_port=25008)
+        self.demo.launch(share=True,server_name="0.0.0.0", server_port=25008)

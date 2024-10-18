@@ -19,8 +19,8 @@ class Scorer:
         async with AsyncOpenAI(api_key=self.api_key) as client:
             prompt = f"""
 You are an expert at scoring short essay questions.
-You are provided with one QUESTION and one CHECKING ANSWER for that QUESTION.
-After the USER enters the USER ANSWER, you will check the USER ANSWER against the CHECKING ANSWER.
+You are provided with 1 QUESTION and 1 CHECKING ANSWER for that QUESTION.
+After USER enters the USER ANSWER, you will check USER ANSWER with CHECKING ANSWER.
 
 Instructions:
 - Grade based on 3 criteria: accuracy (0-5 points), completeness (0-3 points), clarity (0-2 points) (total 10 points).
@@ -51,19 +51,25 @@ CHECKING ANSWER:
             try:
                 async with asyncio.timeout(10):
                     completion = await client.chat.completions.create(
-                        model="gpt-4o-mini",
+                        model="gpt-4",
                         messages=[
                             {"role": "system", "content": prompt},
                             {"role": "user", "content": user_answer},
                         ],
                         temperature=0,
-                        max_tokens=2048,
+                        max_tokens=6000,
                     )
-                logger.info("Received scoring from OpenAI")
-                return json.loads(completion.choices[0].message.content)
-            except (RateLimitError, APIError) as e:
-                logger.error(f"OpenAI API error: {e}")
+                logger.info("Đã gửi yêu cầu chấm điểm đến OpenAI")
+                response_content = completion.choices[0].message.content
+                logger.debug(f"OpenAI Response: {response_content}")
+                return json.loads(response_content)
+            except RateLimitError:
+                logger.warning("Rate limit exceeded. Retrying after a delay.")
+                await asyncio.sleep(5)
+                return await self.score_essay(question, checking_answer, user_answer)
+            except APIError as e:
+                logger.error(f"OpenAI API error: {str(e)}")
                 raise
             except Exception as e:
-                logger.error(f"Scoring error: {e}")
+                logger.error(f"Error in scoring: {str(e)}")
                 raise

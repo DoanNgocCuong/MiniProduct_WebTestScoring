@@ -2,7 +2,6 @@
 
 import pandas as pd
 import logging
-import threading
 
 logger = logging.getLogger(__name__)
 
@@ -18,7 +17,7 @@ class DataLoader:
             df = pd.read_excel(self.file_path, sheet_name=sheet_name, engine='openpyxl')
             df = df[df['topic'].notna()]
         except Exception as e:
-            logger.error(f"Error reading Excel file: {e}")
+            logger.error(f"Lỗi khi đọc tệp Excel: {e}")
             raise
         questions = df['question'].tolist()
         checking_answers = df['checking_answer'].tolist()
