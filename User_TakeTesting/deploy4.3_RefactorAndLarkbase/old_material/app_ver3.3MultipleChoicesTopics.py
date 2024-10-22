@@ -689,7 +689,7 @@ def create_quiz_interface(file_path, sheet_name_mc, sheet_name_essay, output_dir
         demo.launch(server_name="0.0.0.0", server_port=25008)
 
 if __name__ == "__main__":
-    file_path = r'Data_MarketingKit.xlsx'
+    file_path = r'D:\OneDrive - Hanoi University of Science and Technology\ITE10-DS&AI-HUST\Learn&Task\PRODUCT_THECOACH\Đã đẩy lên GITHUB\MiniProduct_WebTestScoring\User_TakeTesting\deploy4.3_RefactorAndLarkbase\data\Data_MarketingKit.xlsx'
     sheet_name_mc = 'TN_P1P2'
     sheet_name_essay = 'TL_P1P2'
     output_dir = r'./out'

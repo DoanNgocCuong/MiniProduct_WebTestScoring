@@ -23,7 +23,7 @@ def main():
     # Load environment variables
     load_dotenv()
     # Initialize backend components
-    file_path = 'Data_MarketingKit.xlsx'  # Ensure this file exists in the project directory
+    file_path = 'data/Data_MarketingKit.xlsx'  # Ensure this file exists in the project directory
     sheet_name_mc = 'TN_P1P2'
     sheet_name_essay = 'TL_P1P2'
     output_dir = './out'
