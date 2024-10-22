@@ -78,6 +78,14 @@ Initial release of the quiz application.
    - version 2.1: Further enhanced with optimized processing and UI improvements
 
 Each version has built upon the previous, with version 2.1 representing a significant leap in terms of user experience and overall application robustness.
+---------------------------
+## 3. Với nhiều cập nhật - vào cuối tháng 9/2024
+- 3.1 app_update1UIUX_EnterSubmitEachQ.py   (Chuyển từ việc Enter 1 cái là sang câu mới => Thành làm xong 1 câu ấn submit mới sang câu mới. 1 cuộc cải cách mạnh về UI vì nó chưa được tách thành Back và Front nên khá căng) 
+- 3.2 app_update2NewScoringPrompt.py với kiểu chấm Make-sensing hơn. Chuyển từ AI chấm dựa trên 3 tiêu chí và đưa ra feedback => Chuyển thành AI đưa ra cách nó chấm dựa vào 3 tiêu chí và feedback. 
+(Cách chấm vẫn thế, khác ở chỗ nó Make-Sensing hơn với User). 
+- 3.3 app_update3MultipleChoicesTopics.py     
 
-
-Version 3.1: Update Prompting cơ chế chấm điểm => Kéo theo cơ chế điểm số 1 câu => Làm xong tính ra điểm trung bình
+## 4. Giai đoạn giữa tháng 10 - cập nhật chính: Log data vào Larkbase. 
+- 4.1 Log 2 Larkbase <mất bản css của ver 3 gồm br và bolid>
+- 4.2 Refactor lại toàn bộ code, chia ra làm Backend, Frontend, main. 
+- 4.3 Bổ sung Larkbase vào code sau khi đã được Refactor => cập nhật đầy đủ như 4.1
