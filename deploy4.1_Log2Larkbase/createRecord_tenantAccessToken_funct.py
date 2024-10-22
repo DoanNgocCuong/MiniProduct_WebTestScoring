@@ -23,13 +23,10 @@ print("tenant_access_token:", tenant_access_token)
 
 
 fields_json = {
-	"fields": {
-		"Multi-select column": [
-			"Option1",
-			"Option2"
-		],
-		"conversation_id": "Example Text"
-	}
+    "fields": {
+        "user_name": "Example Text",
+        "stt": 1
+    }
 }
 
 def create_record(app_base_token, base_table_id, tenant_access_token, fields_json):

@@ -20,11 +20,8 @@ base_table_id = config.BASE_TABLE_ID  # Your table_id
 
 fields_json = {
     "fields": {
-        "Multi-select column": [
-            "Option1",
-            "Option2"
-        ],
-        "conversation_id": "Example Text"
+        "user_name": "Example Text",
+        "stt": 1
     }
 }
 
