@@ -1,0 +1,19 @@
+# ko up file .env
+.env
+tenantAccessToken_storage.txt
+
+# ko up file log
+*.log
+
+# bỏ qua tất cả folder có tên là .pytest_cache và .gradio và __pycache__
+.pytest_cache
+.gradio
+__pycache__
+
+
+# Bỏ qua tất cả các file bên trong mọi thư mục có tên out
+out/**
+
+# Nhưng vẫn giữ tất cả thư mục có tên out
+!out/
+!*/out/
