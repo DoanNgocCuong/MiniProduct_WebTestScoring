@@ -12,8 +12,4 @@ __pycache__
 
 
 # Bỏ qua tất cả các file bên trong mọi thư mục có tên out
-out/**
-
-# Nhưng vẫn giữ tất cả thư mục có tên out
-!out/
-!*/out/
+out/

@@ -1,0 +1,19 @@
+.total-score-top {
+    position: fixed;
+    top: 0;
+    left: 5%;               /* Đảm bảo thanh được căn trái */
+    right: 5%;              /* Đảm bảo thanh được căn phải */
+    width: 90%;           /* Chiều ngang của thanh là 90% của màn hình */
+    background-color: #333; /* Đổi màu nền để có độ tương phản cao hơn */
+    color: #fff;           /* Màu chữ trắng cho tương phản */
+    padding: 10px;
+    z-index: 1000;
+    text-align: center;     /* Căn giữa nội dung trong thanh */
+    font-weight: bold;
+    border-bottom: 1px solid #ddd;
+    box-sizing: border-box; /* Đảm bảo padding và border không làm thay đổi kích thước */
+}
+
+.quiz-content {
+    margin-top: 80px;      /* Để nội dung không bị đè lên thanh Total Score */
+}
