@@ -1,25 +1,12 @@
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
+__pycache__
+*.pyc
+*.pyo
+*.pyd
 .Python
 env/
 venv/
 .env
-
-# Development
 .git
 .gitignore
-.idea/
-.vscode/
-
-# Project specific
-out/
-Data_MarketingKit.xlsx
+.pytest_cache
 *.log
-*.xlsx
-
-# Docker
-Dockerfile
-.dockerignore

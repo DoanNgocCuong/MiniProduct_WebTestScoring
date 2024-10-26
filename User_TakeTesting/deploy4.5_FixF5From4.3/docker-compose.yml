@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  quiz-app:
+    build: .
+    ports:
+      - "7860:7860"
+    volumes:
+      - ./data:/app/data
+      - ./out:/app/out
+    env_file:
+      - .env
+    restart: unless-stopped

@@ -151,7 +151,7 @@ class QuizManager:
         else:
             return "Quiz finished!"
         
-    def send_results_to_larkbase(self, df):
+    async def send_results_to_larkbase(self, df):
         records_fields_json = {
             "records": [
                 {
@@ -177,8 +177,7 @@ class QuizManager:
         logger.info(f"Preparing to send data to Larkbase: {records_fields_json_str}")
         
         try:
-            # Sửa lại cách gọi phương thức, chỉ truyền records_fields_json
-            self.larkbase_operations.create_many_records_with_checkTenantAccessToken(
+            await self.larkbase_operations.create_many_records_with_checkTenantAccessToken(
                 records_fields_json
             )
             logger.info("Data successfully sent to Larkbase")
@@ -196,12 +195,20 @@ class QuizManager:
         df = pd.DataFrame(state['results'])
         try:
             save_results_to_excel(df, state['output_path'])
-            logger.info("Quiz finalized và kết quả đã được lưu.")
+            logger.info("Quiz finalized and results saved.")
             
-            # Gọi phương thức gửi kết quả đến Larkbase
-            self.send_results_to_larkbase(df)
+            # Get the current event loop or create a new one
+            try:
+                loop = asyncio.get_event_loop()
+            except RuntimeError:
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+            
+            # Create and run the coroutine
+            loop.create_task(self.send_results_to_larkbase(df))
+            
         except Exception as e:
-            logger.error(f"Lỗi khi lưu kết quả quiz: {e}")
+            logger.error(f"Error saving quiz results: {e}")
 
     def get_initial_state(self, state):
         # Trả về state ban đầu để lưu trữ
