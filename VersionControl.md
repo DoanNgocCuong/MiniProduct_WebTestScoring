@@ -87,5 +87,9 @@ Each version has built upon the previous, with version 2.1 representing a signif
 
 ## 4. Giai đoạn giữa tháng 10 - cập nhật chính: Log data vào Larkbase. 
 - 4.1 Log 2 Larkbase <mất bản css của ver 3 gồm br và bolid>
-- 4.2 Refactor lại toàn bộ code, chia ra làm Backend, Frontend, main. 
-- 4.3 Bổ sung Larkbase vào code sau khi đã được Refactor => cập nhật đầy đủ như 4.1
+- 4.2 Refactor lại toàn bộ code, chia ra làm Backend, Frontend, main.  <Bug: F5 ko load lại câu hỏi>
+- 4.3 Bổ sung Larkbase vào code sau khi đã được Refactor => cập nhật đầy đủ như 4.1  <Bug: F5 ko load lại câu hỏi>
+- 4.4: Fix từ 4.2 => Fix F5 để load lại câu hỏi. 
+- 4.5: Tương tự 4.2 lên 4.4, tui fix từ 4.3 lên 4.5 để load được câu hỏi. 
+
+Ngoài ra: Khi bạn làm xong bài sẽ log kết quả, feedback lại log lại 1 lần nữa vào Larkbase. 
