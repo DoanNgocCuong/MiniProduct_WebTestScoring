@@ -4,7 +4,7 @@ import gradio as gr
 import os
 import logging
 from frontend_package.callbacks import QuizCallbacks
-
+from config import PORT
 logger = logging.getLogger(__name__)
 
 class QuizInterface:
@@ -118,4 +118,4 @@ class QuizInterface:
         return gr.update(choices=topics)
 
     def launch(self):
-        self.demo.launch(share=True,server_name="0.0.0.0", server_port=25008)
+        self.demo.launch(share=True,server_name="0.0.0.0", server_port=PORT)

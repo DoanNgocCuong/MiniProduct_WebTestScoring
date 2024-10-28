@@ -27,13 +27,13 @@ RUN mkdir -p /app/data /app/out
 ENV PYTHONPATH=/app
 ENV PYTHONUNBUFFERED=1
 ENV GRADIO_SERVER_NAME=0.0.0.0
-ENV GRADIO_SERVER_PORT=7860
+ENV GRADIO_SERVER_PORT=PORT
 
 # Create volumes for data persistence
 VOLUME ["/app/data", "/app/out"]
 
 # Expose port for Gradio interface
-EXPOSE 7860
+EXPOSE 25008
 
 # Run the application
 CMD ["python", "main.py"]

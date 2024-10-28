@@ -4,10 +4,13 @@ services:
   quiz-app:
     build: .
     ports:
-      - "7860:7860"
+      - "25008:25008"
     volumes:
       - ./data:/app/data
       - ./out:/app/out
+    environment:
+      - GRADIO_SERVER_PORT=25008
+      - GRADIO_SERVER_NAME=0.0.0.0
     env_file:
       - .env
     restart: unless-stopped
