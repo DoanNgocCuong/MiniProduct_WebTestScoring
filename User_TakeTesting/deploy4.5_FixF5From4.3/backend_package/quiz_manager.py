@@ -37,15 +37,16 @@ class QuizManager:
             raise ValueError("Không có câu hỏi nào cho chủ đề đã chọn.")
 
         num_questions = min(num_questions, total_available_questions)
-        desired_essay = int(num_questions * 0.7)
+        desired_essay = int(num_questions * 0.7) + 1     # + 1 để fix khi mà chọn 1 questions thì nó ko ra 0, 0
         actual_essay = min(desired_essay, len(essay_questions))
         actual_mc = min(num_questions - actual_essay, len(mc_questions))
 
-        selected_essay = random.sample(essay_questions, actual_essay) if essay_questions else []
+        selected_essay = random.sample(essay_questions, actual_essay) if essay_questions else []   
         selected_mc = random.sample(mc_questions, actual_mc) if mc_questions else []
 
-        questions = selected_essay + selected_mc
-        random.shuffle(questions)
+        # Đổi tên biến này
+        selected_questions = selected_essay + selected_mc  # thay vì questions
+        random.shuffle(selected_questions)
 
         quiz_start_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         file_safe_user_name = user_name.replace(" ", "")
@@ -56,8 +57,8 @@ class QuizManager:
         state = {
             'user_name': user_name,
             'selected_topic': selected_topics,
-            'num_questions': num_questions,
-            'questions': questions,
+            'num_questions': len(selected_questions),  # sử dụng selected_questions
+            'questions': selected_questions,  # sử dụng selected_questions
             'current_question_index': 0,
             'total_score': 0,
             'results': [],
@@ -114,7 +115,7 @@ class QuizManager:
 
         state['current_question_index'] += 1
 
-        if state['current_question_index'] >= state['num_questions']:
+        if state['current_question_index'] >= len(state['questions']):
             self.finalize_quiz(state)
 
         return feedback, state
@@ -145,7 +146,8 @@ class QuizManager:
         return feedback
 
     def get_next_question(self, state):
-        if state['current_question_index'] < state['num_questions']:
+        selected_questions = len(state['questions'])
+        if state['current_question_index'] < selected_questions:    # # sửa ở đây để selected_questions được lấy khi so sánh kết thúc câu - chứ ko phải là number_questions
             question_data = state['questions'][state['current_question_index']]
             return question_data['question']
         else:
